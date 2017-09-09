@@ -126,6 +126,38 @@ user_profile = build_profile("albert", "einstein", location = "princeton", field
 print(user_profile)
 
 
+# 函数编写指南，应该函数指定描述性的名称，且只在其中使用小写字母和下划线
+
+# 1. 给形参指定默认值时，等号两边不要有空格
+def function_name(parameter_0, parameter_1="default value")
+
+# 2. 对于函数调用中的关键字实参，也应遵守这种约定
+function_name(value_0, parameter_1="value")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
