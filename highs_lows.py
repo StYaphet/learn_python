@@ -15,24 +15,26 @@ with open(filename) as f:
     # for index, column_header in enumerate(header_row):
     #     print(index, column_header)
 
-    dates, highs = [], []
+    dates, highs, lows = [], [], []
     for row in reader:
-    	# 将包含日期信息的数据（row[0]）转换为datatime对象，并将其添加进dates列表
-    	current_date = datetime.strptime(row[0],"%Y-%m-%d")
-    	dates.append(current_date)
-    	high = int(row[1])
-    	highs.append(high)
+        # 将包含日期信息的数据（row[0]）转换为datatime对象，并将其添加进dates列表
+        current_date = datetime.strptime(row[0], "%Y-%m-%d")
+        dates.append(current_date)
+        high = int(row[1])
+        low = int(row[3])
+        highs.append(high)
+        lows.append(low)
 
     fig = plt.figure(dpi=128, figsize=(10, 6))
     plt.plot(dates, highs, c="red")
+    plt.plot(dates, lows, c="blue")
+    plt.fill_between(dates, lows, highs, facecolor="blue", alpha=0.1)
 
     plt.title("Daily high temperatures - 2014", fontsize=24)
-    plt.xlabel("",fontsize=16)
+    plt.xlabel("", fontsize=16)
     # 调用fig.autofmt_xdate()来绘制日期标签，以免他们彼此重叠
     fig.autofmt_xdate()
     plt.ylabel("Temperature (F)", fontsize=16)
     plt.tick_params(axis="both", labelsize=16)
 
     plt.show()
-
-
