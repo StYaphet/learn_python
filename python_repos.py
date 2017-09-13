@@ -25,33 +25,46 @@ print("\nKeys:",len(repo_dict))
 # 答应这个字典的所有键，看看其中包含了哪些信息
 # for key in sorted(repo_dict.keys()):
 # 	print(key)
-names, stars = [], []
+names, plot_dicts = [], []
 
 # 获取数据
 for repo_dict in repo_dicts:
 	names.append(repo_dict["name"])
-	stars.append(repo_dict["stargazers_count"])
+	plot_dict = {
+		"value" : repo_dict["stargazers_count"],
+		"label" : repo_dict["description"]
+	}
+	plot_dicts.append(plot_dict)
 
 # 可视化
 # 使用LightenStyle类(别名LS)定义了一种样式，并将其基色设置为深蓝色
 # 我们还传递了实参base_style，以使用LightColorizedStyle类(别名LCS)
 mystyle = LS("#333366", base_style=LCS)
+# 创建了一个Pygal类Config实例，并将其命名为my_config，通过修改my_config的属性，可以定制图表的外观
 my_config = pygal.Config()
 my_config.x_label_rotation = 45
 my_config.show_legend = False
+# 设置的图表标题字体大小
 my_config.title_font_size = 24
+# 副标签字体大小
+my_config.label_font_size = 14
+# 主标签字体大小
 my_config.major_label_font_size = 18
+# 使用truncate_label 将较长的项目名缩短为15个字符
 my_config.truncate_label = 15
+# 我们将show_y_guides 设置为False ，以隐藏图表中的水平线
 my_config.show_y_guides = False
+# 设置了自定义宽度，让图表更充分地利用浏览器中的可用空间。
 my_config.width = 1000
 # 我们使用Bar() 创建一个简单的条形图，并向它传递了my_style 
-# 还传递了另外两个样式实参:让标签绕  轴旋转45度 (x_label_rotation=45 )，并隐藏了图例(show_legend=False )
+# 创建Bar 实例时，我们将my_config 作为第一个实参，从而通过一个实参传递了所有的配置设置。
+# 我们可以通过my_config 做任意数量的样式和配置修改，而此处的生成代码行将保持不变。
 chart = pygal.Bar(my_config, style=mystyle)
 chart.title = "Most-Starred Objective-C Projects on GitHub"
 # 将属性x_labels 设置为列表names 。
 chart.x_labels = names
 # 由于我们不需要给这个数据系列添加标签，因此在此处添加数据时，将标签设置成了空字符串。
-chart.add("", stars)
+chart.add("", plot_dicts)
 chart.render_to_file("python_repos.svg")
 
 
