@@ -15,12 +15,12 @@ response_dict = r.json()
 print("Total repositories:", response_dict['total_count'])
 # 打印了与'total_count' 相关联的值，它指出了GitHub总共包含多少个Objective-C仓库。
 repo_dicts = response_dict["items"]
-print("Repositories returned:", len(repo_dicts)) 
+print("Repositories returned:", len(repo_dicts))
 
 # 提取了repo_dicts 中的第一个字典，并将其存储在repo_dict 中
 repo_dict = repo_dicts[0]
 # 接下来，我们打印这个字典包含的键数，看看其中有多少信息
-print("\nKeys:",len(repo_dict))
+print("\nKeys:", len(repo_dict))
 
 # 答应这个字典的所有键，看看其中包含了哪些信息
 # for key in sorted(repo_dict.keys()):
@@ -29,12 +29,15 @@ names, plot_dicts = [], []
 
 # 获取数据
 for repo_dict in repo_dicts:
-	names.append(repo_dict["name"])
-	plot_dict = {
-		"value" : repo_dict["stargazers_count"],
-		"label" : repo_dict["description"]
-	}
-	plot_dicts.append(plot_dict)
+    names.append(repo_dict["name"])
+    plot_dict = {
+        "value": repo_dict["stargazers_count"],
+        "label": repo_dict["description"],
+        # Pygal还允许你将图表中的每个条形用作网站的链接。
+        # 在为每个项目创建的字典中，添加一个键为'xlink' 的键—值对即可
+        "xlink": repo_dict["html_url"],
+    }
+    plot_dicts.append(plot_dict)
 
 # 可视化
 # 使用LightenStyle类(别名LS)定义了一种样式，并将其基色设置为深蓝色
@@ -56,7 +59,7 @@ my_config.truncate_label = 15
 my_config.show_y_guides = False
 # 设置了自定义宽度，让图表更充分地利用浏览器中的可用空间。
 my_config.width = 1000
-# 我们使用Bar() 创建一个简单的条形图，并向它传递了my_style 
+# 我们使用Bar() 创建一个简单的条形图，并向它传递了my_style
 # 创建Bar 实例时，我们将my_config 作为第一个实参，从而通过一个实参传递了所有的配置设置。
 # 我们可以通过my_config 做任意数量的样式和配置修改，而此处的生成代码行将保持不变。
 chart = pygal.Bar(my_config, style=mystyle)
@@ -66,8 +69,3 @@ chart.x_labels = names
 # 由于我们不需要给这个数据系列添加标签，因此在此处添加数据时，将标签设置成了空字符串。
 chart.add("", plot_dicts)
 chart.render_to_file("python_repos.svg")
-
-
-
-
-
