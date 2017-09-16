@@ -86,13 +86,19 @@ names_regex = re.compile("Agent \w+")
 print(names_regex.sub("CENSORED", "Agent Alice gave the secret documents to Agent Bob."))
 
 # 有时候，你可能需要使用匹配的文本本身，作为替换的一部分。在sub()的第一个参数中，可以输入\1、\2、\3……表示“在替换中输入分组1、2、3……中的文本”
-# 
+# 但是，通过在字符串的第一个引号之 前加上 r，可以将该字符串标记为原始字符串，它不包括转义字符。
 agent_name_regex = re.compile("Agent (\w)\w*")
 print(agent_name_regex.sub(r"\1****", "Agent Alice told Agent Carol that Agent Eve knew Agent Bob was a double agent."))
 
+# 你可以告诉 re.compile()，忽略正则表达式字符 串中的空白符和注释，从而缓解这一点。要实现这种详细模式，可以向 re.compile() 传入变量 re.VERBOSE，作为第二个参数。
+# 正则表达式字符串中的注释规则，与普通的 Python 代码一样:#符号和它后面直 到行末的内容，都被忽略。而且，表示正则表达式的多行字符串中，多余的空白字符 也不认为是要匹配的文本模式的一部分。这让你能够组织正则表达式，让它更可读。
+phone_regex = re.compile(r'''(
+	(\d{3}|\(\d{3}\))? # area code
+	(\s|-|\.)?        # separator
+	)''', re.VERBOSE)
 
-
-
+# 如果你希望在正则表达式中使用 re.VERBOSE 来编写注释，还希望使用 re.IGNORECASE 来忽略大小写，该怎么办?
+# 遗憾的是，re.compile()函数只接受一 个值作为它的第二参数。可以使用管道字符(|)将变量组合起来，从而绕过这个限 制。管道字符在这里称为“按位或”操作符。
 
 
 
